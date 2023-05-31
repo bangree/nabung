@@ -5,7 +5,7 @@ import 'package:nabung/widgets/transactionsItem.dart';
 import 'package:nabung/widgets/wallets.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,44 +26,67 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            WalletBox(),
+            const WalletBox(
+              color: Color(0xFF5E657E),
+            ),
             Expanded(
               child: ListView(
+                padding: const EdgeInsets.only(
+                  top: 50,
+                  bottom: 20,
+                  left: 30,
+                  right: 30,
+                ),
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: 50, bottom: 20, left: 30, right: 30),
-                    child: Column(
+                  const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Recent Transactions',
-                                style: TextStyle(
-                                    fontSize: 16, fontFamily: 'Montserrat'),
-                              ),
-                              Text(
-                                'See All',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.blue),
-                              ),
-                            ]),
-                        SizedBox(
-                          height: 20,
+                        Text(
+                          'Recent Transactions',
+                          style:
+                              TextStyle(fontSize: 16, fontFamily: 'Montserrat'),
                         ),
-                        for (Transaction trans in transList)
-                          TransactionItem(
-                            transaction: trans,
-                          )
+                        Text(
+                          'See All',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Montserrat',
+                              color: Colors.blue),
+                        ),
+                      ]),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...List.generate(
+                          Transaction.transactionList().length,
+                          (index) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              TransactionItem(
+                                transaction:
+                                    Transaction.transactionList()[index],
+                              ),
+                              if (index <
+                                  Transaction.transactionList().length - 1) ...[
+                                const Divider(),
+                              ],
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -76,7 +99,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         backgroundColor: customBackground,
         title: Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 20),
+            padding: const EdgeInsets.only(top: 20, bottom: 20),
             child: Column(
               children: [
                 Text(
@@ -87,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black.withOpacity(0.4),
                       fontFamily: 'Montserrat'),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: Text(
                     'USER_NAME',

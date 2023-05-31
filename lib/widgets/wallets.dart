@@ -9,7 +9,8 @@ int walletValue = 1000000;
 String walletDate = "10 May 2023";
 
 class WalletBox extends StatelessWidget {
-  const WalletBox({super.key});
+  final Color color;
+  const WalletBox({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +18,14 @@ class WalletBox extends StatelessWidget {
       height: 175,
       width: 320,
       decoration: BoxDecoration(
-        color: customWallet.withOpacity(1),
+        color: color,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
         children: [
-          SizedBox(height: 35),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+          const SizedBox(height: 35),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -43,17 +44,17 @@ class WalletBox extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 0,
                 ),
                 Text(
                   'Today, $walletDate',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 11,
                     color: Colors.white,
@@ -62,19 +63,19 @@ class WalletBox extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               children: [
                 Row(
                   children: [
-                    SizedBox(width: 0),
+                    const SizedBox(width: 0),
                     Text(
                       NumberFormat.currency(
                               locale: 'id', symbol: 'Rp ', decimalDigits: 0)
                           .format(walletValue),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 24,
                         color: Colors.white,
@@ -85,19 +86,19 @@ class WalletBox extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 0,
                 ),
                 Text(
-                  '$walletName',
+                  walletName,
                   textAlign: TextAlign.right,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 11,
                     color: Colors.white,
@@ -119,7 +120,7 @@ class WalletBox extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 500,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xff368983),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
@@ -136,8 +137,8 @@ class WalletBox extends StatelessWidget {
                       child: Container(
                         height: 40,
                         width: 40,
-                        color: Color.fromRGBO(250, 250, 250, 0.1),
-                        child: Icon(
+                        color: const Color.fromRGBO(250, 250, 250, 0.1),
+                        child: const Icon(
                           Icons.notification_add_outlined,
                           size: 30,
                           color: Colors.white,
@@ -145,8 +146,8 @@ class WalletBox extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 35, left: 10),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 35, left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -181,7 +182,7 @@ class WalletBox extends StatelessWidget {
             height: 175,
             width: 320,
             decoration: BoxDecoration(
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(47, 125, 121, 0.3),
                   offset: Offset(0, 6),
@@ -189,14 +190,14 @@ class WalletBox extends StatelessWidget {
                   spreadRadius: 6,
                 ),
               ],
-              color: Color.fromARGB(255, 47, 125, 121),
+              color: const Color.fromARGB(255, 47, 125, 121),
               borderRadius: BorderRadius.circular(15),
             ),
-            child: Column(
+            child: const Column(
               children: [
                 SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -217,7 +218,7 @@ class WalletBox extends StatelessWidget {
                 ),
                 SizedBox(height: 7),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.only(left: 15),
                   child: Row(
                     children: [
                       Text(
@@ -233,7 +234,7 @@ class WalletBox extends StatelessWidget {
                 ),
                 SizedBox(height: 25),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -286,7 +287,7 @@ class WalletBox extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
