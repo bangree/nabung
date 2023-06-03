@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nabung/mainPages/AboutPage.dart';
 import 'package:nabung/widgets/menuItem.dart';
 
 class AccountPage extends StatefulWidget {
@@ -112,7 +113,12 @@ class _AccountPageState extends State<AccountPage> {
                 icon: Icons.info,
                 label: 'ABOUT',
                 onTap: () {
-                  print('on tap about');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutPage(),
+                    ),
+                  );
                 },
               ),
             ],
