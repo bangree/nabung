@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/mainPages/AboutPage.dart';
+import 'package:nabung/mainPages/EditProfilePage.dart';
+import 'package:nabung/mainPages/SettingPage.dart';
 import 'package:nabung/widgets/menuItem.dart';
 
 class AccountPage extends StatefulWidget {
@@ -95,7 +97,12 @@ class _AccountPageState extends State<AccountPage> {
                 icon: AssetPath.profile,
                 label: 'EDIT PROFILE',
                 onTap: () {
-                  print('on tap edit profile');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfilePage(),
+                    ),
+                  );
                 },
               ),
 
@@ -106,7 +113,12 @@ class _AccountPageState extends State<AccountPage> {
                 icon: AssetPath.setting,
                 label: 'SETTING',
                 onTap: () {
-                  print('on tap Setting');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingPage(),
+                    ),
+                  );
                 },
               ),
 

@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:nabung/constants/color.dart';
 
 class MenuItem extends StatelessWidget {
-  final String icon;
+  final String? icon;
   final String label;
+  final Color? labelColor;
+  final TextAlign? textAlign;
   final Function()? onTap;
 
   const MenuItem({
     Key? key,
-    required this.icon,
+    this.icon,
     required this.label,
+    this.labelColor,
+    this.textAlign,
     this.onTap,
   }) : super(key: key);
 
@@ -26,27 +30,33 @@ class MenuItem extends StatelessWidget {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              Container(
-                height: 36,
-                width: 36,
-                decoration: BoxDecoration(
-                  color: lightGrey,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    icon,
-                    height: 24,
-                    width: 24,
+              if (icon != null) ...[
+                Container(
+                  height: 36,
+                  width: 36,
+                  decoration: BoxDecoration(
+                    color: lightGrey,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      icon!,
+                      height: 24,
+                      width: 24,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                const SizedBox(width: 12),
+              ],
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: (labelColor ?? customText).withOpacity(0.5),
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: textAlign,
                 ),
               )
             ],
