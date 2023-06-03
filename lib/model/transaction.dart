@@ -60,7 +60,7 @@ class Transaction {
         id: '03',
         name: 'ATM Withdrawal',
         category: 'Cash Withdraw',
-        icon: 'assets/images/wallet.png',
+        icon: 'assets/images/other_bill.png',
         date: DateTime.now(),
         value: -500000,
       ),
