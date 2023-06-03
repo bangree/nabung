@@ -22,7 +22,7 @@ class AssetPath {
   static const String otherIncome = '$images/other_income.png';
   static const String plan = '$images/plan.png';
   static const String profile = '$images/profile.png';
-  static const String returningBill = '$images/returning_bill.png';
+  static const String recurringBill = '$images/recurring_bill.png';
   static const String salary = '$images/salary.png';
   static const String setting = '$images/setting.png';
   static const String transport = '$images/transport.png';
