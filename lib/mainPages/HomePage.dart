@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: customBackground.withOpacity(1),
       appBar: _buildAppBar(),
       body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         width: MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,12 +32,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.only(
-                  top: 50,
-                  bottom: 20,
-                  left: 30,
-                  right: 30,
-                ),
+                padding: const EdgeInsets.only(top: 50, bottom: 20),
                 children: [
                   const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

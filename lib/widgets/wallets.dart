@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/number_symbols_data.dart';
-
-import 'package:nabung/constants/color.dart';
+import 'package:nabung/constants/assetPath.dart';
 
 String walletName = 'Test Wallet Name';
 int walletValue = 1000000;
@@ -10,104 +8,117 @@ String walletDate = "10 May 2023";
 
 class WalletBox extends StatelessWidget {
   final Color color;
+
   const WalletBox({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 175,
-      width: 320,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: 35),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Balance',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-                Icon(
-                  Icons.more_horiz,
-                  color: Colors.white,
-                ),
-              ],
+    return AspectRatio(
+      aspectRatio: 320 / 175,
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(15),
+          image: const DecorationImage(
+            image: AssetImage(
+              AssetPath.bgCard,
             ),
           ),
-          const SizedBox(height: 2),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Row(
+        ),
+        child: Stack(
+          children: [
+            Column(
               children: [
-                const SizedBox(
-                  width: 0,
-                ),
-                Text(
-                  'Today, $walletDate',
-                  style: const TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 11,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 25),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(width: 0),
-                    Text(
-                      NumberFormat.currency(
-                              locale: 'id', symbol: 'Rp ', decimalDigits: 0)
-                          .format(walletValue),
-                      style: const TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 24,
+                const SizedBox(height: 35),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Balance',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(
+                        Icons.more_horiz,
                         color: Colors.white,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 0,
+                      ),
+                      Text(
+                        'Today, $walletDate',
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 11,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      Row(
+                        children: [
+                          const SizedBox(width: 0),
+                          Text(
+                            NumberFormat.currency(
+                                    locale: 'id',
+                                    symbol: 'Rp ',
+                                    decimalDigits: 0)
+                                .format(walletValue),
+                            style: const TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(
+                        width: 0,
+                      ),
+                      Text(
+                        walletName,
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 11,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
-          ),
-          const SizedBox(height: 6),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(
-                  width: 0,
-                ),
-                Text(
-                  walletName,
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 11,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
