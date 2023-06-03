@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nabung/constants/color.dart';
 
 class MenuItem extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String label;
   final Function()? onTap;
 
@@ -17,23 +18,28 @@ class MenuItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        color: white,
         padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        decoration: BoxDecoration(
-          color: const Color(0xFFD9D9D9),
-          border: Border.all(
-            color: Colors.black,
-            width: 1,
-          ),
+          horizontal: 20,
+          vertical: 16,
         ),
         child: IntrinsicHeight(
           child: Row(
             children: [
-              Icon(
-                icon,
-                size: 24,
+              Container(
+                height: 36,
+                width: 36,
+                decoration: BoxDecoration(
+                  color: lightGrey,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    icon,
+                    height: 24,
+                    width: 24,
+                  ),
+                ),
               ),
               const SizedBox(width: 12),
               Text(

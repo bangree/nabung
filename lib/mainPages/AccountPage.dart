@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/mainPages/AboutPage.dart';
 import 'package:nabung/widgets/menuItem.dart';
 
@@ -31,56 +32,59 @@ class _AccountPageState extends State<AccountPage> {
 
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(vertical: 24),
             children: [
               // profile
-              IntrinsicHeight(
-                child: Row(
-                  children: [
-                    Container(
-                      height: 75,
-                      width: 75,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xffD9D9D9),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 75,
+                        width: 75,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xffD9D9D9),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          IntrinsicHeight(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'user name',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black,
+                      const SizedBox(width: 16),
+                      const Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'user name',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 8),
-                                Icon(
-                                  Icons.edit,
-                                  color: Colors.black,
-                                  size: 20,
-                                )
-                              ],
+                                  SizedBox(width: 8),
+                                  Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'User_name@gmail.com',
-                          ),
-                        ],
+                            SizedBox(height: 4),
+                            Text(
+                              'User_name@gmail.com',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
@@ -88,29 +92,29 @@ class _AccountPageState extends State<AccountPage> {
 
               // edit profile
               MenuItem(
-                icon: Icons.person,
+                icon: AssetPath.profile,
                 label: 'EDIT PROFILE',
                 onTap: () {
                   print('on tap edit profile');
                 },
               ),
 
-              const SizedBox(height: 20),
+              const Divider(height: 0),
 
               // setting
               MenuItem(
-                icon: Icons.settings,
+                icon: AssetPath.setting,
                 label: 'SETTING',
                 onTap: () {
                   print('on tap Setting');
                 },
               ),
 
-              const SizedBox(height: 20),
+              const Divider(height: 0),
 
               // about
               MenuItem(
-                icon: Icons.info,
+                icon: AssetPath.about,
                 label: 'ABOUT',
                 onTap: () {
                   Navigator.push(
