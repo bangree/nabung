@@ -16,20 +16,22 @@ class SplashPage extends StatelessWidget {
       listener: (context, state) {
         if (state is UnAuthenticationState) {
           // go to login page
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => const LoginPage(),
             ),
+            (route) => false,
           );
         }
         if (state is AuthenticatedState) {
           // go to main page
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => const MainPage(),
             ),
+            (route) => false,
           );
         }
       },
