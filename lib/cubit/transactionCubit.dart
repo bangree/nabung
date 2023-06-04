@@ -57,6 +57,16 @@ class TransactionCubit extends Cubit<BaseState<List<TransactionModel>>> {
     );
   }
 
+  void delete({
+    required String userId,
+    required String transactionId,
+  }) async {
+    await transactionRepository.delete(
+      userId: userId,
+      transactionId: transactionId,
+    );
+  }
+
   @override
   Future<void> close() {
     streamSubscription.cancel();

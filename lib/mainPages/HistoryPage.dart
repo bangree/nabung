@@ -30,6 +30,8 @@ class _HistoryPageState extends State<HistoryPage> {
       );
     }
 
+    selectedWallet = selectedWallet ?? wallets.first;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

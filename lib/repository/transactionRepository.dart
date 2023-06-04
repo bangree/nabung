@@ -18,6 +18,17 @@ class TransactionRepository {
         .set(transactionModel.toMap());
   }
 
+  Future<void> delete({
+    required String userId,
+    required String transactionId,
+  }) async {
+    await userReference
+        .doc(userId)
+        .collection(transaction)
+        .doc(transactionId)
+        .delete();
+  }
+
   Stream<List<TransactionModel>> watch({
     required String userId,
   }) {
