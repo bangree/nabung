@@ -196,18 +196,18 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   TransactionItem(
                                     transaction: transactions[index],
-                                    onTap: () {
-                                      // open form transaction page
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              FormTransactionPage(
-                                            transaction: transactions[index],
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                    // onTap: () {
+                                    //   // open form transaction page
+                                    //   Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           FormTransactionPage(
+                                    //         transaction: transactions[index],
+                                    //       ),
+                                    //     ),
+                                    //   );
+                                    // },
                                   ),
                                   if (index < transactions.length - 1) ...[
                                     const Divider(),
