@@ -113,7 +113,7 @@ class _FormWalletPageState extends State<FormWalletPage> {
                   child: Image.asset(AssetPath.wallet),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 0,
                 vertical: 8,
               ),
@@ -144,7 +144,7 @@ class _FormWalletPageState extends State<FormWalletPage> {
                   child: Image.asset(AssetPath.balance),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 0,
                 vertical: 8,
               ),
@@ -175,7 +175,7 @@ class _FormWalletPageState extends State<FormWalletPage> {
                   child: Image.asset(AssetPath.plan),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 0,
                 vertical: 8,
               ),
@@ -206,7 +206,7 @@ class _FormWalletPageState extends State<FormWalletPage> {
                   child: Image.asset(AssetPath.goal),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 0,
                 vertical: 8,
               ),
@@ -232,7 +232,7 @@ class _FormWalletPageState extends State<FormWalletPage> {
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 0,
                 vertical: 8,
               ),

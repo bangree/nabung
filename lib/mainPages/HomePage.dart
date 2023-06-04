@@ -82,15 +82,15 @@ class _HomePageState extends State<HomePage> {
                           (index) => WalletBox(
                             wallet: wallets.isNotEmpty ? wallets[index] : null,
                             onTap: () {
-                              // go to form wallet
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FormWalletPage(
-                                    wallet: wallets[index],
+                              if (wallets.isEmpty) {
+                                // go to form wallet
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const FormWalletPage(),
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             },
                           ),
                         ),

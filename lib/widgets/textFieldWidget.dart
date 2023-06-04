@@ -16,6 +16,7 @@ class TextFieldWidget extends StatefulWidget {
   final bool filled;
   final bool usingCurrency;
   final Widget? prefix;
+  final EdgeInsets? padding;
   final EdgeInsets? contentPadding;
 
   const TextFieldWidget({
@@ -33,6 +34,7 @@ class TextFieldWidget extends StatefulWidget {
     this.filled = false,
     this.usingCurrency = false,
     this.prefix,
+    this.padding,
     this.contentPadding,
   }) : super(key: key);
 
@@ -53,11 +55,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   Widget build(BuildContext context) {
     return Container(
       color: widget.filled ? white : null,
-      padding: widget.contentPadding ??
-          const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
+      padding: widget.padding ?? EdgeInsets.zero,
       child: IntrinsicHeight(
         child: Row(
           children: [
