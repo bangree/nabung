@@ -23,7 +23,7 @@ class SelectWalletPage extends StatelessWidget {
           },
           child: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('Select Color'),
+        title: const Text('Select Wallet'),
       ),
       body: wallets.isEmpty
           ? const Center(
