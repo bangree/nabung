@@ -12,12 +12,21 @@ class WalletModel extends Equatable {
   final int? budgetPlan;
   final int? goal;
   final String? color;
+  final int? updatedAt;
 
   String get textBalance => currencyFormat(value: balance);
 
   String get textBudgetPlan => currencyFormat(value: budgetPlan);
 
   String get textGoal => currencyFormat(value: goal);
+
+  String get dateUpdatedAt {
+    DateTime dateTime = DateTime.now();
+    if (updatedAt != null) {
+      dateTime = DateTime.fromMillisecondsSinceEpoch(updatedAt!);
+    }
+    return DateFormat('EEE, dd MMM yyyy').format(dateTime);
+  }
 
   Color get walletColor {
     if (color != null) {
@@ -33,10 +42,10 @@ class WalletModel extends Equatable {
   }
 
   String currencyFormat({int? value}) {
-    if (value == null) return '';
+    if (value == null) return 'Rp 0';
     return NumberFormat.currency(
       locale: 'id_ID',
-      symbol: '',
+      symbol: 'Rp ',
       decimalDigits: 0,
     ).format(value);
   }
@@ -48,7 +57,10 @@ class WalletModel extends Equatable {
     this.budgetPlan,
     this.goal,
     this.color,
+    this.updatedAt,
   });
+
+
 
   factory WalletModel.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
@@ -63,6 +75,7 @@ class WalletModel extends Equatable {
       budgetPlan: data['budgetPlan'],
       goal: data['goal'],
       color: data['color'],
+      updatedAt: data['updatedAt'],
     );
   }
 
@@ -74,6 +87,7 @@ class WalletModel extends Equatable {
       'budgetPlan': budgetPlan,
       'goal': goal,
       'color': color,
+      'updatedAt': updatedAt,
     };
   }
 
@@ -85,5 +99,6 @@ class WalletModel extends Equatable {
         budgetPlan,
         goal,
         color,
+        updatedAt,
       ];
 }

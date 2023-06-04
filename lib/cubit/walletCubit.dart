@@ -40,10 +40,11 @@ class WalletCubit extends Cubit<BaseState<List<WalletModel>>> {
     WalletModel wallet = WalletModel(
       id: id ?? const Uuid().v1(),
       name: name,
-      balance: int.tryParse(balance) ?? 0,
-      budgetPlan: int.tryParse(budgetPlan) ?? 0,
-      goal: int.tryParse(goal) ?? 0,
+      balance: int.tryParse(balance.replaceAll('.', '')) ?? 0,
+      budgetPlan: int.tryParse(budgetPlan.replaceAll('.', '')) ?? 0,
+      goal: int.tryParse(goal.replaceAll('.', '')) ?? 0,
       color: color,
+      updatedAt: DateTime.now().millisecondsSinceEpoch,
     );
 
     await walletRepository.createOrUpdate(

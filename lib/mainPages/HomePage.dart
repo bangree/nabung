@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                       CarouselSlider(
                         carouselController: carouselController,
                         options: CarouselOptions(
-                          aspectRatio: 320 / 175,
+                          aspectRatio: 300 / 170,
                           viewportFraction: 1,
                           autoPlay: wallets.length > 1,
                           disableCenter: true,
