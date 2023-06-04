@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/constants/color.dart';
-import 'package:nabung/model/transaction.dart';
+import 'package:nabung/model/transactionModel.dart';
 
 class TransactionItem extends StatelessWidget {
-  final Transaction transaction;
+  final TransactionModel transaction;
 
   const TransactionItem({Key? key, required this.transaction})
       : super(key: key);
@@ -28,7 +29,7 @@ class TransactionItem extends StatelessWidget {
         ),
         child: Center(
           child: Image.asset(
-            transaction.icon,
+            transaction.categoryIcon ?? AssetPath.logo,
             height: 20,
             width: 20,
           ),
@@ -42,18 +43,16 @@ class TransactionItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                transaction.name,
+                transaction.name ?? '-',
                 textAlign: TextAlign.left,
                 style: const TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                 ),
               ),
               Text(
-                transaction.category,
+                transaction.categoryName ?? '-',
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   color: const Color(0xff222222).withOpacity(0.4),
                 ),
@@ -74,7 +73,7 @@ class TransactionItem extends StatelessWidget {
               locale: 'id',
               symbol: 'Rp ',
               decimalDigits: 0,
-            ).format(transaction.value),
+            ).format(transaction.amount ?? 0),
             textAlign: TextAlign.right,
             style: const TextStyle(
               fontFamily: 'Montserrat',
@@ -83,10 +82,9 @@ class TransactionItem extends StatelessWidget {
             ),
           ),
           Text(
-            '10 Maret 2023',
+            transaction.date ?? '-',
             textAlign: TextAlign.right,
             style: TextStyle(
-              fontFamily: 'Montserrat',
               fontSize: 16,
               color: const Color(0xff222222).withOpacity(0.4),
             ),

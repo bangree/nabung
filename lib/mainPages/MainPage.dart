@@ -7,6 +7,8 @@ import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationActionCubit.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
+import 'package:nabung/cubit/transactionCubit.dart';
+import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/mainPages/LoginPage.dart';
 import 'package:nabung/model/userModel.dart';
 import 'package:nabung/repository/authenticationRepository.dart';
@@ -61,6 +63,15 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
 
   @override
+  void initState() {
+    // init wallet & transaction
+    UserModel user = context.read<AuthenticationDataCubit>().state.data!;
+    context.read<WalletCubit>().init(userId: user.id!);
+    context.read<TransactionCubit>().init(userId: user.id!);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthenticationActionCubit(
@@ -73,6 +84,10 @@ class _MainPageState extends State<MainPage> {
               if (state is SuccessState) {
                 // update authentication data
                 context.read<AuthenticationDataCubit>().update(userModel: null);
+
+                // reinit wallet & transaction
+                context.read<WalletCubit>().reInit();
+                context.read<TransactionCubit>().reInit();
 
                 // go to login page
                 Navigator.push(

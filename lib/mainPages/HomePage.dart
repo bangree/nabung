@@ -1,12 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/baseState.dart';
+import 'package:nabung/cubit/transactionCubit.dart';
+import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/model/transaction.dart';
+import 'package:nabung/model/transactionModel.dart';
+import 'package:nabung/model/walletModel.dart';
 import 'package:nabung/widgets/transactionsItem.dart';
 import 'package:nabung/widgets/wallets.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,114 +34,173 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: customBackground.withOpacity(1),
       appBar: _buildAppBar(),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 20),
 
-            // card wallet carousel
-            CarouselSlider(
-              carouselController: carouselController,
-              options: CarouselOptions(
-                aspectRatio: 320 / 175,
-                viewportFraction: 1,
-                autoPlay: true,
-                disableCenter: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-              ),
-              items: List.generate(
-                3,
-                (index) => const WalletBox(
-                  color: Color(0xFF5E657E),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            // dots indicator
-            DotsIndicator(
-              dotsCount: 3,
-              position: currentIndex,
-              decorator: const DotsDecorator(
-                color: grey, // Inactive color
-                activeColor: primary,
-                size: Size(6.0, 6.0),
-                activeSize: Size(24.0, 6.0),
-                activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                ),
-                spacing: EdgeInsets.symmetric(horizontal: 2),
-              ),
-              onTap: (val) {
-                carouselController.animateToPage(val.toInt());
-              },
-            ),
-
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(top: 50, bottom: 20),
-                children: [
-                  const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Recent Transactions',
-                          style:
-                              TextStyle(fontSize: 16, fontFamily: 'Montserrat'),
+          // wallet carousel
+          BlocBuilder<WalletCubit, BaseState<List<WalletModel>>>(
+            builder: (context, state) {
+              if (state is LoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is ErrorState) {
+                return const Center(
+                  child: Text('Error, Something Wrong!'),
+                );
+              }
+              if (state is LoadedState) {
+                final List<WalletModel> wallets = state.data ?? [];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // card wallet carousel
+                      CarouselSlider(
+                        carouselController: carouselController,
+                        options: CarouselOptions(
+                          aspectRatio: 320 / 175,
+                          viewportFraction: 1,
+                          autoPlay: wallets.length > 1,
+                          disableCenter: true,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              currentIndex = index;
+                            });
+                          },
                         ),
-                        Text(
-                          'See All',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'Montserrat',
-                              color: Colors.blue),
-                        ),
-                      ]),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ...List.generate(
-                          Transaction.transactionList().length,
-                          (index) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              TransactionItem(
-                                transaction:
-                                    Transaction.transactionList()[index],
-                              ),
-                              if (index <
-                                  Transaction.transactionList().length - 1) ...[
-                                const Divider(),
-                              ],
-                            ],
+                        items: List.generate(
+                          wallets.isEmpty
+                              ? 1
+                              : wallets.length > 3
+                                  ? 3
+                                  : wallets.length,
+                          (index) => WalletBox(
+                            wallet: wallets.isNotEmpty ? wallets[index] : null,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // dots indicator
+                      DotsIndicator(
+                        dotsCount: wallets.isEmpty
+                            ? 1
+                            : wallets.length > 3
+                                ? 3
+                                : wallets.length,
+                        position: currentIndex,
+                        decorator: const DotsDecorator(
+                          color: grey,
+                          // Inactive color
+                          activeColor: primary,
+                          size: Size(6.0, 6.0),
+                          activeSize: Size(24.0, 6.0),
+                          activeShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                          ),
+                          spacing: EdgeInsets.symmetric(horizontal: 2),
+                        ),
+                        onTap: (val) {
+                          carouselController.animateToPage(val.toInt());
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+
+          const SizedBox(height: 50),
+
+          Expanded(
+            child: BlocBuilder<TransactionCubit,
+                BaseState<List<TransactionModel>>>(
+              builder: (context, state) {
+                if (state is LoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ErrorState) {
+                  return const Center(
+                    child: Text('Error, Something Wrong!'),
+                  );
+                }
+
+                if (state is LoadedState) {
+                  final List<TransactionModel> transactions = state.data ?? [];
+                  if (transactions.isEmpty) return const SizedBox();
+
+                  return ListView(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      bottom: 20,
+                    ),
+                    children: [
+                      const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Recent Transactions',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              'See All',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ]),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ...List.generate(
+                              transactions.length,
+                              (index) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  TransactionItem(
+                                    transaction: transactions[index],
+                                  ),
+                                  if (index < transactions.length - 1) ...[
+                                    const Divider(),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox();
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
