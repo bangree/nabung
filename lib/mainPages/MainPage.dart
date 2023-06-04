@@ -14,7 +14,7 @@ import 'package:nabung/model/userModel.dart';
 import 'package:nabung/repository/authenticationRepository.dart';
 
 import 'AccountPage.dart';
-import 'AddPage.dart';
+import 'FormTransactionPage.dart';
 import 'HistoryPage.dart';
 import 'HomePage.dart';
 import 'WalletPage.dart';
@@ -121,11 +121,11 @@ class _MainPageState extends State<MainPage> {
                   ),
                   floatingActionButton: FloatingActionButton(
                     onPressed: () {
-                      // open add transaction page
+                      // open form transaction page
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AddPage(),
+                          builder: (context) => const FormTransactionPage(),
                         ),
                       );
                     },

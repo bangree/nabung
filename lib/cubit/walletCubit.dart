@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/model/walletModel.dart';
@@ -51,6 +52,29 @@ class WalletCubit extends Cubit<BaseState<List<WalletModel>>> {
       userId: userId,
       walletModel: wallet,
     );
+  }
+
+  void addTransaction({
+    required String userId,
+    required String walletId,
+    required int amount,
+  }) async {
+    final List<WalletModel> wallets = state.data ?? [];
+
+    // get wallet
+    WalletModel? wallet = wallets.firstWhereOrNull(
+      (element) => element.id == walletId,
+    );
+
+    if (wallet != null) {
+      await walletRepository.createOrUpdate(
+        userId: userId,
+        walletModel: wallet.copyWith(
+          balance: (wallet.balance ?? 0) + amount,
+          updatedAt: DateTime.now().millisecondsSinceEpoch,
+        ),
+      );
+    }
   }
 
   @override

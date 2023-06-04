@@ -7,6 +7,7 @@ import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
+import 'package:nabung/mainPages/FormTransactionPage.dart';
 import 'package:nabung/mainPages/FormWalletPage.dart';
 import 'package:nabung/model/transaction.dart';
 import 'package:nabung/model/transactionModel.dart';
@@ -87,7 +88,8 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const FormWalletPage(),
+                                    builder: (context) =>
+                                        const FormWalletPage(),
                                   ),
                                 );
                               }
@@ -194,6 +196,18 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   TransactionItem(
                                     transaction: transactions[index],
+                                    onTap: () {
+                                      // open form transaction page
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              FormTransactionPage(
+                                            transaction: transactions[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                   if (index < transactions.length - 1) ...[
                                     const Divider(),

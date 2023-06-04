@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/model/transactionModel.dart';
 
 class TransactionItem extends StatelessWidget {
   final TransactionModel transaction;
+  final Function()? onTap;
 
-  const TransactionItem({Key? key, required this.transaction})
-      : super(key: key);
+  const TransactionItem({
+    Key? key,
+    required this.transaction,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
-        print('clicked on transaction item');
-      },
+      onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 8,
@@ -69,16 +70,12 @@ class TransactionItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            NumberFormat.currency(
-              locale: 'id',
-              symbol: 'Rp ',
-              decimalDigits: 0,
-            ).format(transaction.amount ?? 0),
+            '${transaction.type == 'income' ? '' : '- '}Rp ${transaction.textAmount}',
             textAlign: TextAlign.right,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 16,
-              color: Colors.red,
+              color: transaction.type == 'income' ? green : red,
             ),
           ),
           Text(

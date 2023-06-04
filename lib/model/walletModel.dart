@@ -60,7 +60,25 @@ class WalletModel extends Equatable {
     this.updatedAt,
   });
 
-
+  WalletModel copyWith({
+    String? id,
+    String? name,
+    int? balance,
+    int? budgetPlan,
+    int? goal,
+    String? color,
+    int? updatedAt,
+  }) {
+    return WalletModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      balance: balance ?? this.balance,
+      budgetPlan: budgetPlan ?? this.budgetPlan,
+      goal: goal ?? this.goal,
+      color: color ?? this.color,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 
   factory WalletModel.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;

@@ -9,13 +9,13 @@ class TransactionRepository {
 
   Future<void> createOrUpdate({
     required String userId,
-    required TransactionModel walletModel,
+    required TransactionModel transactionModel,
   }) async {
     await userReference
         .doc(userId)
         .collection(transaction)
-        .doc(walletModel.id!)
-        .set(walletModel.toMap());
+        .doc(transactionModel.id!)
+        .set(transactionModel.toMap());
   }
 
   Stream<List<TransactionModel>> watch({

@@ -39,20 +39,22 @@ class SelectCategoryPage extends StatelessWidget {
             (index) => Container(
               decoration: index < CategoryModel.expense.length - 1
                   ? BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-              )
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                      ),
+                    )
                   : null,
               child: MenuItem(
                 label: CategoryModel.expense[index].label,
                 icon: CategoryModel.expense[index].icon,
                 onTap: () {
-                  // todo:
-                  Navigator.pop(context);
+                  Navigator.pop(
+                    context,
+                    CategoryModel.expense[index],
+                  );
                 },
               ),
             ),
@@ -73,20 +75,22 @@ class SelectCategoryPage extends StatelessWidget {
             (index) => Container(
               decoration: index < CategoryModel.income.length - 1
                   ? BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-              )
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                      ),
+                    )
                   : null,
               child: MenuItem(
                 label: CategoryModel.income[index].label,
                 icon: CategoryModel.income[index].icon,
                 onTap: () {
-                  // todo:
-                  Navigator.pop(context);
+                  Navigator.pop(
+                    context,
+                    CategoryModel.income[index],
+                  );
                 },
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class TransactionModel extends Equatable {
   final String? id;
@@ -10,6 +11,18 @@ class TransactionModel extends Equatable {
   final String? type;
   final String? date;
   final String? walletId;
+  final int? updatedAt;
+
+  String get textAmount => currencyFormat(value: amount);
+
+  String currencyFormat({int? value}) {
+    if (value == null) return '0';
+    return NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: '',
+      decimalDigits: 0,
+    ).format(value);
+  }
 
   const TransactionModel({
     this.id,
@@ -20,6 +33,7 @@ class TransactionModel extends Equatable {
     this.type,
     this.date,
     this.walletId,
+    this.updatedAt,
   });
 
   factory TransactionModel.fromDocumentSnapshot(DocumentSnapshot snapshot) {
