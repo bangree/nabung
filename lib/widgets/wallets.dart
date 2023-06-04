@@ -95,7 +95,7 @@ class WalletBox extends StatelessWidget {
                           const Spacer(),
                           const SizedBox(height: 25),
                           Text(
-                            wallet!.textBudgetPlan,
+                            wallet!.textBalance,
                             style: const TextStyle(
                               fontSize: 24,
                               color: Colors.white,
