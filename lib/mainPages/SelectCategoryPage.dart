@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nabung/model/category_model.dart';
+import 'package:nabung/model/categoryModel.dart';
 import 'package:nabung/widgets/menuItem.dart';
 
 class SelectCategoryPage extends StatelessWidget {
