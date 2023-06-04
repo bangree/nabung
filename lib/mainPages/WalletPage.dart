@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nabung/cubit/baseState.dart';
+import 'package:nabung/cubit/walletCubit.dart';
+import 'package:nabung/mainPages/FormWalletPage.dart';
+import 'package:nabung/model/walletModel.dart';
 import 'package:nabung/widgets/wallets.dart';
 
 class WalletPage extends StatefulWidget {
@@ -21,22 +26,33 @@ class _WalletPageState extends State<WalletPage> {
         Container(
           height: kToolbarHeight,
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: const Center(
+          child: Center(
             child: IntrinsicHeight(
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'Wallets',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Text(
-                    '+ New Wallets',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xff7C92E2),
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: () {
+                      // go to form wallet
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FormWalletPage(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      '+ New Wallets',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff7C92E2),
+                      ),
                     ),
                   ),
                 ],
@@ -47,19 +63,46 @@ class _WalletPageState extends State<WalletPage> {
 
         // list card
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(24),
-            children: const [
-              // card 1
-              WalletBox(
-                color: Color(0xFF5E657E),
-              ),
-              SizedBox(height: 16),
-              // card 2
-              WalletBox(
-                color: Color(0xFF4B69D8),
-              ),
-            ],
+          child: BlocBuilder<WalletCubit, BaseState<List<WalletModel>>>(
+            builder: (context, state) {
+              if (state is LoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is ErrorState) {
+                return const Center(
+                  child: Text('Error, Something Wrong!'),
+                );
+              }
+              if (state is LoadedState) {
+                final List<WalletModel> wallets = state.data ?? [];
+                return ListView.builder(
+                  padding: const EdgeInsets.all(24),
+                  itemCount: wallets.isEmpty ? 1 : wallets.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(top: index == 0 ? 0 : 16),
+                      child: WalletBox(
+                        wallet: wallets.isEmpty ? null : wallets[index],
+                        onTap: () {
+                          if (wallets.isEmpty) {
+                            // go to form wallet
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const FormWalletPage(),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  },
+                );
+              }
+              return const SizedBox();
+            },
           ),
         ),
       ],
