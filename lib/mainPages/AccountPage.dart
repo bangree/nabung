@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationActionCubit.dart';
+import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/mainPages/AboutPage.dart';
 import 'package:nabung/mainPages/EditProfilePage.dart';
 import 'package:nabung/mainPages/SettingPage.dart';
+import 'package:nabung/model/userModel.dart';
 import 'package:nabung/widgets/menuItem.dart';
 
 class AccountPage extends StatefulWidget {
@@ -18,6 +20,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
+    UserModel user = context.read<AuthenticationDataCubit>().state.data!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -54,7 +57,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,27 +67,24 @@ class _AccountPageState extends State<AccountPage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'user name',
-                                      style: TextStyle(
+                                      user.username ?? '-',
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.black,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 8),
-                                  Icon(
-                                    Icons.edit,
-                                    color: Colors.black,
-                                    size: 20,
-                                  )
+                                  const SizedBox(width: 8),
+                                  Image.asset(
+                                    AssetPath.edit,
+                                    height: 16,
+                                  ),
                                 ],
                               ),
                             ),
-                            SizedBox(height: 4),
-                            Text(
-                              'User_name@gmail.com',
-                            ),
+                            const SizedBox(height: 4),
+                            Text(user.email ?? '-'),
                           ],
                         ),
                       ),
