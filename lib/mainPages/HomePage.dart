@@ -7,6 +7,7 @@ import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
+import 'package:nabung/mainPages/FormWalletPage.dart';
 import 'package:nabung/model/transaction.dart';
 import 'package:nabung/model/transactionModel.dart';
 import 'package:nabung/model/walletModel.dart';
@@ -81,6 +82,17 @@ class _HomePageState extends State<HomePage> {
                                   : wallets.length,
                           (index) => WalletBox(
                             wallet: wallets.isNotEmpty ? wallets[index] : null,
+                            onTap: () {
+                              // go to form wallet
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FormWalletPage(
+                                    wallet: wallets[index],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),

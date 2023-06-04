@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: ThemeData(
-              primarySwatch: Colors.indigo,
+              primarySwatch: Colors.lightBlue,
               fontFamily: 'Montserrat',
               appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.white,

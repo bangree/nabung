@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nabung/model/colorModel.dart';
 
 class WalletModel extends Equatable {
@@ -11,6 +12,12 @@ class WalletModel extends Equatable {
   final int? budgetPlan;
   final int? goal;
   final String? color;
+
+  String get textBalance => currencyFormat(value: balance);
+
+  String get textBudgetPlan => currencyFormat(value: budgetPlan);
+
+  String get textGoal => currencyFormat(value: goal);
 
   Color get walletColor {
     if (color != null) {
@@ -23,6 +30,15 @@ class WalletModel extends Equatable {
       return selectedColor;
     }
     return const Color(0xFF5E657E);
+  }
+
+  String currencyFormat({int? value}) {
+    if (value == null) return '';
+    return NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: '',
+      decimalDigits: 0,
+    ).format(value);
   }
 
   const WalletModel({
