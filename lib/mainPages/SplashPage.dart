@@ -1,38 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/assetPath.dart';
+import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/mainPages/LoginPage.dart';
+import 'package:nabung/mainPages/MainPage.dart';
+import 'package:nabung/model/userModel.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    goToLogin();
-    super.initState();
-  }
-
-  void goToLogin() async {
-    await Future.delayed(const Duration(seconds: 2));
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Image.asset(AssetPath.logoName),
+    return BlocListener<AuthenticationDataCubit, BaseState<UserModel>>(
+      listener: (context, state) {
+        if (state is UnAuthenticationState) {
+          // go to login page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginPage(),
+            ),
+          );
+        }
+        if (state is AuthenticatedState) {
+          // go to main page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainPage(),
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Image.asset(AssetPath.logoName),
+          ),
         ),
       ),
     );

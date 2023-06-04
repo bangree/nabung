@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/assetPath.dart';
+import 'package:nabung/constants/color.dart';
+import 'package:nabung/cubit/authenticationActionCubit.dart';
 import 'package:nabung/mainPages/AboutPage.dart';
 import 'package:nabung/mainPages/EditProfilePage.dart';
 import 'package:nabung/mainPages/SettingPage.dart';
@@ -136,6 +139,17 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   );
                 },
+              ),
+
+              const SizedBox(height: 32),
+
+              // logout
+              MenuItem(
+                label: 'LOGOUT',
+                onTap: () {
+                  context.read<AuthenticationActionCubit>().logout();
+                },
+                labelColor: red,
               ),
             ],
           ),
