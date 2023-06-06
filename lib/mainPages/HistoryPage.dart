@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
           // update selected wallet
           selectedWallet = wallets.firstWhereOrNull(
                   (element) => element.id == selectedWallet?.id) ??
-              wallets.first;
+              (wallets.isNotEmpty ? wallets.first : null);
         }
       },
       builder: (context, walletState) {
