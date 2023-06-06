@@ -77,6 +77,16 @@ class WalletCubit extends Cubit<BaseState<List<WalletModel>>> {
     }
   }
 
+  void delete({
+    required String userId,
+    required String walletId,
+  }) async {
+    await walletRepository.delete(
+      userId: userId,
+      walletId: walletId,
+    );
+  }
+
   @override
   Future<void> close() {
     streamSubscription.cancel();

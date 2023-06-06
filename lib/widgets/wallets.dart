@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/constants/color.dart';
+import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/walletCubit.dart';
+import 'package:nabung/mainPages/FormWalletPage.dart';
+import 'package:nabung/model/userModel.dart';
 import 'package:nabung/model/walletModel.dart';
 
-class WalletBox extends StatelessWidget {
+class WalletBox extends StatefulWidget {
   final WalletModel? wallet;
   final Function()? onTap;
 
@@ -14,15 +19,23 @@ class WalletBox extends StatelessWidget {
   });
 
   @override
+  State<WalletBox> createState() => _WalletBoxState();
+}
+
+class _WalletBoxState extends State<WalletBox> {
+  bool showBalance = true;
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: AspectRatio(
         aspectRatio: 300 / 170,
         child: Container(
           decoration: BoxDecoration(
-            color:
-                wallet == null ? const Color(0xFF5E657E) : wallet!.walletColor,
+            color: widget.wallet == null
+                ? const Color(0xFF5E657E)
+                : widget.wallet!.walletColor,
             borderRadius: BorderRadius.circular(15),
             image: const DecorationImage(
               image: AssetImage(
@@ -35,7 +48,7 @@ class WalletBox extends StatelessWidget {
               horizontal: 16,
               vertical: 32,
             ),
-            child: wallet == null
+            child: widget.wallet == null
                 ? Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -65,27 +78,124 @@ class WalletBox extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const IntrinsicHeight(
+                          IntrinsicHeight(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                const Text(
                                   'Balance',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
                                 ),
-                                Icon(
-                                  Icons.more_horiz,
-                                  color: Colors.white,
+                                PopupMenuButton(
+                                  onSelected: (val) {
+                                    if (val == 'edit') {
+                                      // open form wallet
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => FormWalletPage(
+                                            wallet: widget.wallet!,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    if (val == 'delete') {
+                                      WalletCubit walletCubit =
+                                          context.read<WalletCubit>();
+                                      UserModel user = context
+                                          .read<AuthenticationDataCubit>()
+                                          .state
+                                          .data!;
+
+                                      // show dialog delete
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            content:
+                                                const Text('Are you sure ?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  // delete transaction
+                                                  walletCubit.delete(
+                                                    userId: user.id!,
+                                                    walletId:
+                                                        widget.wallet!.id!,
+                                                  );
+
+                                                  // dismiss dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('Yes'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        child: IntrinsicHeight(
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                AssetPath.edit2,
+                                                height: 10,
+                                                width: 10,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              const Text("Edit"),
+                                            ],
+                                          ),
+                                        ),
+                                        value: 'edit',
+                                      ),
+                                      PopupMenuItem(
+                                        child: IntrinsicHeight(
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                AssetPath.trash,
+                                                height: 10,
+                                                width: 10,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              const Text("Delete"),
+                                            ],
+                                          ),
+                                        ),
+                                        value: 'delete',
+                                      ),
+                                    ];
+                                  },
+                                  icon: const Icon(
+                                    Icons.more_horiz,
+                                    color: Colors.white,
+                                  ),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            wallet!.dateUpdatedAt,
+                            widget.wallet!.dateUpdatedAt,
                             style: const TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 11,
@@ -94,16 +204,38 @@ class WalletBox extends StatelessWidget {
                           ),
                           const Spacer(),
                           const SizedBox(height: 25),
-                          Text(
-                            wallet!.textBalance,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  showBalance
+                                      ? widget.wallet!.textBalance
+                                      : widget.wallet!.textBalance
+                                          .replaceAll(RegExp(r'\d'), '*'),
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    showBalance = !showBalance;
+                                  });
+                                },
+                                child: Image.asset(
+                                  showBalance ? AssetPath.blind : AssetPath.eye,
+                                  width: 20,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            wallet!.name ?? '',
+                            widget.wallet!.name ?? '',
                             textAlign: TextAlign.right,
                             style: const TextStyle(
                               fontSize: 11,

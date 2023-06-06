@@ -29,4 +29,15 @@ class WalletRepository {
           event.docs.map((e) => WalletModel.fromDocumentSnapshot(e)).toList(),
     );
   }
+
+  Future<void> delete({
+    required String userId,
+    required String walletId,
+  }) async {
+    await userReference
+        .doc(userId)
+        .collection(wallet)
+        .doc(walletId)
+        .delete();
+  }
 }
