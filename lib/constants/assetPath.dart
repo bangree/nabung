@@ -11,6 +11,7 @@ class AssetPath {
   static const String check = '$images/check.png';
   static const String cross = '$images/cross.png';
   static const String edit = '$images/edit.png';
+  static const String edit2 = '$images/edit_2.png';
   static const String eye = '$images/eye.png';
   static const String food = '$images/food.png';
   static const String goal = '$images/goal.png';
@@ -26,5 +27,6 @@ class AssetPath {
   static const String salary = '$images/salary.png';
   static const String setting = '$images/setting.png';
   static const String transport = '$images/transport.png';
+  static const String trash = '$images/trash.png';
   static const String wallet = '$images/wallet.png';
 }
