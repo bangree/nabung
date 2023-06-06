@@ -14,11 +14,15 @@ class WalletModel extends Equatable {
   final String? color;
   final int? updatedAt;
 
+  int get deviationGoal => (balance ?? 0) - (goal ?? 0);
+
   String get textBalance => currencyFormat(value: balance);
 
   String get textBudgetPlan => currencyFormat(value: budgetPlan);
 
   String get textGoal => currencyFormat(value: goal);
+
+  String get textDeviationGoal => currencyFormat(value: deviationGoal);
 
   String get dateUpdatedAt {
     DateTime dateTime = DateTime.now();

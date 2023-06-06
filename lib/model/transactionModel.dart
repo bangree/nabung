@@ -15,6 +15,8 @@ class TransactionModel extends Equatable {
 
   String get textAmount => currencyFormat(value: amount);
 
+  int get valueAmount => (amount ?? 0) * ((type == 'expense') ? -1 : 1);
+
   String currencyFormat({int? value}) {
     if (value == null) return '0';
     return NumberFormat.currency(
