@@ -1,17 +1,10 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_overlay/loading_overlay.dart';
-import 'package:nabung/constants/color.dart';
-import 'package:nabung/cubit/authenticationActionCubit.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
-import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
-import 'package:nabung/mainPages/LoginPage.dart';
 import 'package:nabung/model/userModel.dart';
-import 'package:nabung/repository/authenticationRepository.dart';
 
 import 'AccountPage.dart';
 import 'FormTransactionPage.dart';

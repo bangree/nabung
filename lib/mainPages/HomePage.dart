@@ -7,7 +7,6 @@ import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
-import 'package:nabung/mainPages/FormTransactionPage.dart';
 import 'package:nabung/mainPages/FormWalletPage.dart';
 import 'package:nabung/model/transaction.dart';
 import 'package:nabung/model/transactionModel.dart';
