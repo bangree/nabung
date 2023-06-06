@@ -106,6 +106,52 @@ class AuthenticationRepository {
     }
   }
 
+  Future<Either<String, String>> changePassword({
+    required String email,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      if (auth.currentUser != null) {
+        AuthCredential authCredential = EmailAuthProvider.credential(
+          email: email,
+          password: oldPassword,
+        );
+        UserCredential userCredential = await auth.currentUser!
+            .reauthenticateWithCredential(authCredential);
+        if (userCredential.user != null) {
+          await userCredential.user!.updatePassword(newPassword);
+          return const Left('Change Password Success');
+        }
+      }
+      return const Right('Change Password Fail');
+    } on FirebaseException catch (e) {
+      return Right(_getMessageFromErrorCode(errorCode: e.code));
+    } catch (e) {
+      return Right(e.toString());
+    }
+  }
+
+  Future<Either<String, String>> deleteAccount() async {
+    try {
+      if (auth.currentUser != null) {
+        final String id = auth.currentUser!.uid;
+        // remove auth
+        await auth.currentUser!.delete();
+
+        // remove firestore
+        await userReference.doc(id).delete();
+
+        return const Left('Delete Account Success');
+      }
+      return const Right('Delete Account Fail');
+    } on FirebaseException catch (e) {
+      return Right(_getMessageFromErrorCode(errorCode: e.code));
+    } catch (e) {
+      return Right(e.toString());
+    }
+  }
+
   String _getMessageFromErrorCode({required String errorCode}) {
     switch (errorCode) {
       case "ERROR_EMAIL_ALREADY_IN_USE":

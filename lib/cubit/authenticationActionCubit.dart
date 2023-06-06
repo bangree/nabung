@@ -58,6 +58,44 @@ class AuthenticationActionCubit extends Cubit<BaseState<UserModel>> {
 
     await authenticationRepository.logout();
 
-    emit(const SuccessState());
+    emit(const SuccessState(message: 'Logout Success'));
+  }
+
+  void changePassword({
+    required String email,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    emit(const LoadingState());
+
+    // check user login
+    Either<String, String> result =
+        await authenticationRepository.changePassword(
+      email: email,
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
+
+    BaseState<UserModel> resultState = result.fold(
+      (l) => SuccessState(message: l),
+      (r) => ErrorState(message: r),
+    );
+
+    emit(resultState);
+  }
+
+  void deleteAccount() async {
+    emit(const LoadingState());
+
+    // check user login
+    Either<String, String> result =
+        await authenticationRepository.deleteAccount();
+
+    BaseState<UserModel> resultState = result.fold(
+      (l) => SuccessState(message: l),
+      (r) => ErrorState(message: r),
+    );
+
+    emit(resultState);
   }
 }

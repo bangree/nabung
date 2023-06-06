@@ -73,94 +73,46 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthenticationActionCubit(
-        authenticationRepository: context.read<AuthenticationRepository>(),
+    return Scaffold(
+      body: IndexedStack(
+        index: currentIndex,
+        children: screens,
       ),
-      child: Builder(
-        builder: (context) {
-          return BlocConsumer<AuthenticationActionCubit, BaseState<UserModel>>(
-            listener: (context, state) {
-              if (state is SuccessState) {
-                // update authentication data
-                context.read<AuthenticationDataCubit>().update(userModel: null);
-
-                // reinit wallet & transaction
-                context.read<WalletCubit>().reInit();
-                context.read<TransactionCubit>().reInit();
-
-                // go to login page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
-                );
-
-                Flushbar(
-                  message: (state as SuccessState).message ?? 'Logout success',
-                  backgroundColor: green,
-                  duration: const Duration(seconds: 2),
-                ).show(context);
-              }
-              if (state is ErrorState) {
-                Flushbar(
-                  message: (state as ErrorState).message ?? 'Logout fail',
-                  backgroundColor: red,
-                  duration: const Duration(seconds: 2),
-                ).show(context);
-              }
-            },
-            builder: (context, state) {
-              return LoadingOverlay(
-                isLoading: state is LoadingState,
-                child: Scaffold(
-                  body: IndexedStack(
-                    index: currentIndex,
-                    children: screens,
-                  ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                      // open form transaction page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FormTransactionPage(),
-                        ),
-                      );
-                    },
-                    backgroundColor: const Color(0xff031A6E),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.centerDocked,
-                  bottomNavigationBar: AnimatedBottomNavigationBar(
-                    icons: const [
-                      Icons.home,
-                      Icons.bar_chart,
-                      Icons.credit_card,
-                      Icons.person,
-                    ],
-                    activeIndex: currentIndex,
-                    onTap: (val) {
-                      setState(() {
-                        currentIndex = val;
-                      });
-                    },
-                    backgroundColor: Colors.white,
-                    activeColor: const Color(0xff031A6E),
-                    inactiveColor: const Color(0xffCBCBDD),
-                    gapLocation: GapLocation.center,
-                    notchSmoothness: NotchSmoothness.defaultEdge,
-                  ),
-                ),
-              );
-            },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // open form transaction page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FormTransactionPage(),
+            ),
           );
         },
+        backgroundColor: const Color(0xff031A6E),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        icons: const [
+          Icons.home,
+          Icons.bar_chart,
+          Icons.credit_card,
+          Icons.person,
+        ],
+        activeIndex: currentIndex,
+        onTap: (val) {
+          setState(() {
+            currentIndex = val;
+          });
+        },
+        backgroundColor: Colors.white,
+        activeColor: const Color(0xff031A6E),
+        inactiveColor: const Color(0xffCBCBDD),
+        gapLocation: GapLocation.center,
+        notchSmoothness: NotchSmoothness.defaultEdge,
       ),
     );
   }
