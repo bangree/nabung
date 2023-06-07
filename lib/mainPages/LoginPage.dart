@@ -116,12 +116,27 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: emailController,
                                   hint: 'Email...',
                                   inputType: TextInputType.emailAddress,
+                                  validator: (val) {
+                                    if (val?.isEmpty ?? true) {
+                                      return 'this field cannot be empty';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 const SizedBox(height: 20),
                                 TextFieldWidget(
                                   controller: passwordController,
                                   hint: 'Password...',
                                   obscure: true,
+                                  validator: (val) {
+                                    if (val?.isEmpty ?? true) {
+                                      return 'this field cannot be empty';
+                                    }
+                                    if (val!.length < 6) {
+                                      return 'min. 6 character';
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ],
                             ),

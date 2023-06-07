@@ -78,6 +78,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           hint: 'Old Password',
                           obscure: true,
                           filled: true,
+                          validator: (val) {
+                            if (val?.isEmpty ?? true) {
+                              return 'this field cannot be empty';
+                            }
+                            if (val!.length < 6) {
+                              return 'min. 6 character';
+                            }
+                            return null;
+                          },
                         ),
                         const Divider(height: 0),
                         TextFieldWidget(
@@ -85,6 +94,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           hint: 'New Password',
                           obscure: true,
                           filled: true,
+                          validator: (val) {
+                            if (val?.isEmpty ?? true) {
+                              return 'this field cannot be empty';
+                            }
+                            if (val!.length < 6) {
+                              return 'min. 6 character';
+                            }
+                            if (val == oldPasswordController.text) {
+                              return 'new password cannot be same as old password';
+                            }
+                            return null;
+                          },
                         ),
                         const Divider(height: 0),
                         const SizedBox(height: 20),
