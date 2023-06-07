@@ -1,12 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:nabung/constants/assetPath.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/settingCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
+import 'package:nabung/main.dart';
 import 'package:nabung/mainPages/SelectCategoryPage.dart';
 import 'package:nabung/mainPages/SelectWalletPage.dart';
 import 'package:nabung/model/categoryModel.dart';
@@ -131,6 +136,37 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
                       walletId: selectedWallet!.id!,
                       amount: amount,
                     );
+
+                // check over budget & notification
+                bool isOverBudgetActive =
+                    context.read<SettingCubit>().state.isOverBudget;
+                print('--> isOverBudgetActive: $isOverBudgetActive');
+                if (isOverBudgetActive) {
+                  // check budget
+                  final String day =
+                      DateFormat('dd/MM/yyyy').format(DateTime.now());
+                  // get total day transaction
+                  final List<TransactionModel> dayTransaction =
+                      (context.read<TransactionCubit>().state.data ?? [])
+                          .where((element) =>
+                              element.date == day &&
+                              element.walletId == selectedWallet!.id)
+                          .toList();
+
+                  int totalDayTransaction = amount * -1;
+                  for (TransactionModel t in dayTransaction) {
+                    totalDayTransaction += (t.valueAmount * -1);
+                  }
+                  print(
+                      '--> total day: $totalDayTransaction - budget plan: ${selectedWallet!.budgetPlan!}');
+
+                  bool isOverBudget =
+                      totalDayTransaction > (selectedWallet!.budgetPlan ?? 0);
+
+                  if (isOverBudget) {
+                    showNotification(walletId: selectedWallet!.id!);
+                  }
+                }
 
                 Navigator.pop(context);
               }
@@ -334,6 +370,33 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void showNotification({required String walletId}) async {
+    // set notification
+    final Int64List vibrationPattern = Int64List(4);
+    vibrationPattern[0] = 0;
+    vibrationPattern[1] = 1000;
+    vibrationPattern[2] = 5000;
+    vibrationPattern[3] = 2000;
+
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      walletId,
+      walletId,
+      channelDescription: 'Channel for notify over budget',
+      icon: 'mipmap/ic_launcher',
+      importance: Importance.high,
+      priority: Priority.high,
+      vibrationPattern: vibrationPattern,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      1,
+      'Notify',
+      'You are over budget',
+      NotificationDetails(android: androidNotificationDetails),
     );
   }
 }
