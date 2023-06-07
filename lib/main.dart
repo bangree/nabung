@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/settingCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/mainPages/SplashPage.dart';
@@ -76,6 +77,9 @@ class _MyAppState extends State<MyApp> {
             create: (context) => TransactionCubit(
               transactionRepository: transactionRepository,
             ),
+          ),
+          BlocProvider(
+            create: (context) => SettingCubit(),
           ),
         ],
         child: Builder(builder: (context) {

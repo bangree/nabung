@@ -10,6 +10,7 @@ class AssetPath {
   static const String car = '$images/car.png';
   static const String check = '$images/check.png';
   static const String cross = '$images/cross.png';
+  static const String display = '$images/display.png';
   static const String edit = '$images/edit.png';
   static const String edit2 = '$images/edit_2.png';
   static const String eye = '$images/eye.png';

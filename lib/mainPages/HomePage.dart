@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
+import 'package:nabung/cubit/settingCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/mainPages/FormWalletPage.dart';
+import 'package:nabung/model/settingModel.dart';
 import 'package:nabung/model/transaction.dart';
 import 'package:nabung/model/transactionModel.dart';
 import 'package:nabung/model/walletModel.dart';
@@ -54,78 +56,84 @@ class _HomePageState extends State<HomePage> {
               }
               if (state is LoadedState) {
                 final List<WalletModel> wallets = state.data ?? [];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // card wallet carousel
-                      CarouselSlider(
-                        carouselController: carouselController,
-                        options: CarouselOptions(
-                          aspectRatio: 300 / 170,
-                          viewportFraction: 1,
-                          autoPlay: wallets.length > 1,
-                          disableCenter: true,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              currentIndex = index;
-                            });
-                          },
-                        ),
-                        items: List.generate(
-                          wallets.isEmpty
-                              ? 1
-                              : wallets.length > 3
-                                  ? 3
-                                  : wallets.length,
-                          (index) => WalletBox(
-                            wallet: wallets.isNotEmpty ? wallets[index] : null,
-                            onTap: () {
-                              if (wallets.isEmpty) {
-                                // go to form wallet
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const FormWalletPage(),
-                                  ),
-                                );
-                              }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // card wallet carousel
+                    BlocBuilder<SettingCubit, SettingModel>(
+                      builder: (context, state) {
+                        return CarouselSlider(
+                          carouselController: carouselController,
+                          options: CarouselOptions(
+                            aspectRatio: 300 / 170,
+                            viewportFraction: 1,
+                            autoPlay: wallets.length > 1 && state.isAutoPlay,
+                            disableCenter: true,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                currentIndex = index;
+                              });
                             },
                           ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      // dots indicator
-                      DotsIndicator(
-                        dotsCount: wallets.isEmpty
-                            ? 1
-                            : wallets.length > 3
-                                ? 3
-                                : wallets.length,
-                        position: currentIndex,
-                        decorator: const DotsDecorator(
-                          color: grey,
-                          // Inactive color
-                          activeColor: primary,
-                          size: Size(6.0, 6.0),
-                          activeSize: Size(24.0, 6.0),
-                          activeShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
+                          items: List.generate(
+                            wallets.isEmpty
+                                ? 1
+                                : wallets.length > 3
+                                    ? 3
+                                    : wallets.length,
+                            (index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: WalletBox(
+                                wallet:
+                                    wallets.isNotEmpty ? wallets[index] : null,
+                                onTap: () {
+                                  if (wallets.isEmpty) {
+                                    // go to form wallet
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const FormWalletPage(),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
                             ),
                           ),
-                          spacing: EdgeInsets.symmetric(horizontal: 2),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // dots indicator
+                    DotsIndicator(
+                      dotsCount: wallets.isEmpty
+                          ? 1
+                          : wallets.length > 3
+                              ? 3
+                              : wallets.length,
+                      position: currentIndex,
+                      decorator: const DotsDecorator(
+                        color: grey,
+                        // Inactive color
+                        activeColor: primary,
+                        size: Size(6.0, 6.0),
+                        activeSize: Size(24.0, 6.0),
+                        activeShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
                         ),
-                        onTap: (val) {
-                          carouselController.animateToPage(val.toInt());
-                        },
+                        spacing: EdgeInsets.symmetric(horizontal: 2),
                       ),
-                    ],
-                  ),
+                      onTap: (val) {
+                        carouselController.animateToPage(val.toInt());
+                      },
+                    ),
+                  ],
                 );
               }
               return const SizedBox();

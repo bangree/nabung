@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nabung/constants/assetPath.dart';
+import 'package:nabung/mainPages/DisplayPage.dart';
+import 'package:nabung/mainPages/NotificationPage.dart';
 import 'package:nabung/widgets/menuItem.dart';
 
 class SettingPage extends StatelessWidget {
@@ -25,7 +27,27 @@ class SettingPage extends StatelessWidget {
           MenuItem(
             icon: AssetPath.notification,
             label: 'Notifications',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
+                ),
+              );
+            },
+          ),
+          const Divider(height: 0),
+          MenuItem(
+            icon: AssetPath.display,
+            label: 'Display',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DisplayPage(),
+                ),
+              );
+            },
           ),
         ],
       ),
