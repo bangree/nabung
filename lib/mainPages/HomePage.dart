@@ -39,8 +39,6 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 20),
-
           // wallet carousel
           BlocBuilder<WalletCubit, BaseState<List<WalletModel>>>(
             builder: (context, state) {
@@ -84,21 +82,26 @@ class _HomePageState extends State<HomePage> {
                             (index) => Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                              child: WalletBox(
-                                wallet:
-                                    wallets.isNotEmpty ? wallets[index] : null,
-                                onTap: () {
-                                  if (wallets.isEmpty) {
-                                    // go to form wallet
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FormWalletPage(),
-                                      ),
-                                    );
-                                  }
-                                },
+                              child: Center(
+                                child: AspectRatio(
+                                  aspectRatio: 300 / 170,
+                                  child: WalletBox(
+                                    wallet:
+                                        wallets.isNotEmpty ? wallets[index] : null,
+                                    onTap: () {
+                                      if (wallets.isEmpty) {
+                                        // go to form wallet
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const FormWalletPage(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ),
