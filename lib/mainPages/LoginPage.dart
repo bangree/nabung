@@ -50,11 +50,12 @@ class _LoginPageState extends State<LoginPage> {
                   ).show(context);
 
                   // go to main page
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const MainPage(),
                     ),
+                    (route) => false,
                   );
                 }
                 if (state is ErrorState) {
