@@ -238,7 +238,7 @@ class _WalletBoxState extends State<WalletBox> {
                             widget.wallet!.name ?? '',
                             textAlign: TextAlign.right,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Colors.white,
                             ),
                           )
