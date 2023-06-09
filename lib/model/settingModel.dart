@@ -5,8 +5,8 @@ class SettingModel extends Equatable {
   final bool isOverBudget;
 
   const SettingModel({
-    this.isAutoPlay = false,
-    this.isOverBudget = false,
+    this.isAutoPlay = true,
+    this.isOverBudget = true,
   });
 
   SettingModel copyWith({
