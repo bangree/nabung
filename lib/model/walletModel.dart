@@ -22,7 +22,8 @@ class WalletModel extends Equatable {
 
   String get textGoal => currencyFormat(value: goal);
 
-  String get textDeviationGoal => currencyFormat(value: deviationGoal);
+  String get textDeviationGoal =>
+      '${deviationGoal > 0 ? '+' : ''}${currencyFormat(value: deviationGoal)}';
 
   String get dateUpdatedAt {
     DateTime dateTime = DateTime.now();
