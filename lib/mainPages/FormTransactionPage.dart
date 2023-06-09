@@ -157,14 +157,12 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
                   for (TransactionModel t in dayTransaction) {
                     totalDayTransaction += (t.valueAmount * -1);
                   }
-                  print(
-                      '--> total day: $totalDayTransaction - budget plan: ${selectedWallet!.budgetPlan!}');
 
                   bool isOverBudget =
                       totalDayTransaction > (selectedWallet!.budgetPlan ?? 0);
 
                   if (isOverBudget) {
-                    showNotification(walletId: selectedWallet!.id!);
+                    showNotification(wallet: selectedWallet!);
                   }
                 }
 
@@ -271,7 +269,7 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
 
                 if (result != null) {
                   setState(() {
-                    categoryController.text = result.label ?? '';
+                    categoryController.text = result.label;
                     selectedCategory = result;
                   });
                 }
@@ -373,7 +371,7 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
     );
   }
 
-  void showNotification({required String walletId}) async {
+  void showNotification({required WalletModel wallet}) async {
     // set notification
     final Int64List vibrationPattern = Int64List(4);
     vibrationPattern[0] = 0;
@@ -383,8 +381,8 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
 
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      walletId,
-      walletId,
+      wallet.id!,
+      wallet.id!,
       channelDescription: 'Channel for notify over budget',
       icon: 'mipmap/ic_launcher',
       importance: Importance.high,
@@ -395,7 +393,7 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
     await flutterLocalNotificationsPlugin.show(
       1,
       'Notify',
-      'You are over budget',
+      'Your wallet ${wallet.name ?? ''} has reached the maximum budget with “${wallet.textBudgetPlan}”',
       NotificationDetails(android: androidNotificationDetails),
     );
   }
