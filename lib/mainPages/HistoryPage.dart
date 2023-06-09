@@ -1,3 +1,4 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +8,11 @@ import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
+import 'package:nabung/mainPages/FormTransactionPage.dart';
 import 'package:nabung/mainPages/SelectWalletPage.dart';
 import 'package:nabung/model/transactionModel.dart';
 import 'package:nabung/model/walletModel.dart';
+import 'package:nabung/widgets/dropdownWidget.dart';
 import 'package:nabung/widgets/transactionsItem.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -20,6 +23,16 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  final TextEditingController searchController = TextEditingController();
+
+  final List<String> orders = [
+    'Date',
+    'Highest',
+    'Lowest',
+  ];
+
+  String? orderBy;
+  String? search;
   WalletModel? selectedWallet;
 
   @override
@@ -102,10 +115,23 @@ class _HistoryPageState extends State<HistoryPage> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            const Icon(
-                              Icons.search,
-                              color: Colors.white,
+                            AnimSearchBar(
+                              width: 200,
+                              textController: searchController,
+                              onSuffixTap: () {
+                                searchController.clear();
+                                setState(() {});
+                              },
+                              onSubmitted: (val) {
+                                // search
+                                search = val;
+                                setState(() {});
+                              },
                             ),
+                            // const Icon(
+                            //   Icons.search,
+                            //   color: Colors.white,
+                            // ),
                           ],
                         ),
                       ),
@@ -144,18 +170,30 @@ class _HistoryPageState extends State<HistoryPage> {
                             ),
                           ),
                           const SizedBox(width: 12),
-                          Container(
-                            height: 42,
-                            width: 42,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Colors.white.withOpacity(0.15),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 18,
+                          InkWell(
+                            onTap: () {
+                              // open form transaction page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const FormTransactionPage(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 42,
+                              width: 42,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white.withOpacity(0.15),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
                               ),
                             ),
                           ),
@@ -175,12 +213,13 @@ class _HistoryPageState extends State<HistoryPage> {
                         if (transactionState is LoadedState) {
                           final String day =
                               DateFormat('dd/MM/yyyy').format(DateTime.now());
-                          final List<TransactionModel> dayTransaction =
+                          List<TransactionModel> dayTransaction =
                               (transactionState.data ?? [])
                                   .where((element) =>
                                       element.date == day &&
                                       element.walletId == selectedWallet!.id)
                                   .toList();
+
                           int totalDayTransaction = 0;
                           for (TransactionModel t in dayTransaction) {
                             totalDayTransaction += (t.valueAmount * -1);
@@ -313,22 +352,26 @@ class _HistoryPageState extends State<HistoryPage> {
                   padding: const EdgeInsets.all(24),
                   children: [
                     // title
-                    const Row(
+                    Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            'Expenses Earnings',
-                            style: TextStyle(
-                              color: Color(0xff031A6E),
-                            ),
+                        const Text(
+                          'Expenses Earnings',
+                          style: TextStyle(
+                            color: Color(0xff031A6E),
                           ),
                         ),
-                        SizedBox(width: 12),
-                        Text('Sort by'),
-                        SizedBox(width: 8),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.black,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: DropdownWidget(
+                            items: orders,
+                            value: orderBy,
+                            hint: 'Sort by',
+                            onChange: (val) {
+                              setState(() {
+                                orderBy = val;
+                              });
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -352,11 +395,44 @@ class _HistoryPageState extends State<HistoryPage> {
 
                         if (state is LoadedState) {
                           selectedWallet = selectedWallet ?? wallets.first;
-                          final List<TransactionModel> transactions =
+                          List<TransactionModel> transactions =
                               (state.data ?? [])
                                   .where((element) =>
                                       element.walletId == selectedWallet!.id)
                                   .toList();
+
+                          if (search?.trim().isNotEmpty ?? false) {
+                            // search by name, category name, date
+                            transactions = transactions
+                                .where(
+                                  (element) =>
+                                      element.name!
+                                          .toLowerCase()
+                                          .contains(search!.toLowerCase()) ||
+                                      element.categoryName!
+                                          .toLowerCase()
+                                          .contains(search!.toLowerCase()) ||
+                                      element.date!
+                                          .toLowerCase()
+                                          .contains(search!.toLowerCase()),
+                                )
+                                .toList();
+                          }
+
+                          if (orderBy != null) {
+                            if (orderBy == 'Date') {
+                              transactions.sort(
+                                  (a, b) => b.dateEpoch.compareTo(a.dateEpoch));
+                            }
+                            if (orderBy == 'Highest') {
+                              transactions.sort((a, b) =>
+                                  a.valueAmount.compareTo(b.valueAmount));
+                            }
+                            if (orderBy == 'Lowest') {
+                              transactions.sort((a, b) =>
+                                  b.valueAmount.compareTo(a.valueAmount));
+                            }
+                          }
 
                           if (transactions.isEmpty) {
                             return const Center(

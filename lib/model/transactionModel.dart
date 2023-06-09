@@ -17,6 +17,10 @@ class TransactionModel extends Equatable {
 
   int get valueAmount => (amount ?? 0) * ((type == 'expense') ? -1 : 1);
 
+  int get dateEpoch => date != null
+      ? DateFormat('dd/MM/yyyy').parse(date!).millisecondsSinceEpoch
+      : 0;
+
   String currencyFormat({int? value}) {
     if (value == null) return '0';
     return NumberFormat.currency(
