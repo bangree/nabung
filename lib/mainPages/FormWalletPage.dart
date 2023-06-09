@@ -246,7 +246,7 @@ class _FormWalletPageState extends State<FormWalletPage> {
 
                 if (result != null) {
                   setState(() {
-                    colorController.text = result.label ?? '';
+                    colorController.text = result.label;
                     selectedColor = result;
                   });
                 }

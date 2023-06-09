@@ -69,7 +69,7 @@ class SelectColorPage extends StatelessWidget {
                     // label
                     Expanded(
                       child: Text(
-                        colorModel.label ?? '-',
+                        colorModel.label,
                         style: TextStyle(
                           fontSize: 15,
                           color: customText.withOpacity(0.5),
