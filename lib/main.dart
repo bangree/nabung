@@ -8,10 +8,12 @@ import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/settingCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
+import 'package:nabung/cubit/userCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/mainPages/SplashPage.dart';
 import 'package:nabung/repository/authenticationRepository.dart';
 import 'package:nabung/repository/transactionRepository.dart';
+import 'package:nabung/repository/userRepository.dart';
 import 'package:nabung/repository/walletRepository.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -47,12 +49,14 @@ class _MyAppState extends State<MyApp> {
   late AuthenticationRepository authenticationRepository;
   late WalletRepository walletRepository;
   late TransactionRepository transactionRepository;
+  late UserRepository userRepository;
 
   @override
   void initState() {
     authenticationRepository = AuthenticationRepository();
     walletRepository = WalletRepository();
     transactionRepository = TransactionRepository();
+    userRepository = UserRepository();
     super.initState();
   }
 
@@ -71,6 +75,9 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider(
           create: (context) => transactionRepository,
         ),
+        RepositoryProvider(
+          create: (context) => userRepository,
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -87,6 +94,11 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) => TransactionCubit(
               transactionRepository: transactionRepository,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => UserCubit(
+              userRepository: userRepository,
             ),
           ),
           BlocProvider(

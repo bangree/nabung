@@ -7,6 +7,7 @@ import 'package:nabung/cubit/authenticationActionCubit.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
+import 'package:nabung/cubit/userCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/mainPages/ChangePasswordPage.dart';
 import 'package:nabung/mainPages/LoginPage.dart';
@@ -30,9 +31,10 @@ class EditProfilePage extends StatelessWidget {
               // update authentication data
               context.read<AuthenticationDataCubit>().update(userModel: null);
 
-              // reinit wallet & transaction
+              // reinit wallet, transaction & user
               context.read<WalletCubit>().reInit();
               context.read<TransactionCubit>().reInit();
+              context.read<UserCubit>().reInit();
 
               // go to login page
               Navigator.push(

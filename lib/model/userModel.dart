@@ -12,6 +12,18 @@ class UserModel extends Equatable {
     this.username,
   });
 
+  UserModel copyWith({
+    String? id,
+    String? email,
+    String? username,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      username: username ?? this.username,
+    );
+  }
+
   factory UserModel.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     return UserModel.fromMap(data);
