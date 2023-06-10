@@ -17,7 +17,7 @@ class SelectTypeCategoryPage extends StatelessWidget {
           },
           child: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('Select Category'),
+        title: const Text('Select Type'),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(
