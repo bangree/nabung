@@ -13,9 +13,12 @@ class AssetPath {
   static const String display = '$images/display.png';
   static const String edit = '$images/edit.png';
   static const String edit2 = '$images/edit_2.png';
+  static const String expense = '$images/expense.png';
   static const String eye = '$images/eye.png';
   static const String food = '$images/food.png';
   static const String goal = '$images/goal.png';
+  static const String income = '$images/income.png';
+  static const String list = '$images/list.png';
   static const String logo = '$images/logo.png';
   static const String logoName = '$images/logo_name.png';
   static const String music = '$images/music.png';
