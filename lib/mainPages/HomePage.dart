@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
 import 'package:nabung/cubit/baseState.dart';
+import 'package:nabung/cubit/mainCubit.dart';
 import 'package:nabung/cubit/settingCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
@@ -86,8 +87,9 @@ class _HomePageState extends State<HomePage> {
                                 child: AspectRatio(
                                   aspectRatio: 300 / 170,
                                   child: WalletBox(
-                                    wallet:
-                                        wallets.isNotEmpty ? wallets[index] : null,
+                                    wallet: wallets.isNotEmpty
+                                        ? wallets[index]
+                                        : null,
                                     onTap: () {
                                       if (wallets.isEmpty) {
                                         // go to form wallet
@@ -171,23 +173,30 @@ class _HomePageState extends State<HomePage> {
                       bottom: 20,
                     ),
                     children: [
-                      const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Recent Transactions',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Recent Transactions',
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
-                            Text(
+                          ),
+                          InkWell(
+                            onTap: () {
+                              // move to tab history (index = 1)
+                              context.read<MainCubit>().change(1);
+                            },
+                            child: const Text(
                               'See All',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,
                               ),
                             ),
-                          ]),
+                          ),
+                        ],
+                      ),
                       const SizedBox(
                         height: 20,
                       ),

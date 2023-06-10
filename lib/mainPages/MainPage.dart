@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/mainCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/userCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
@@ -54,8 +55,6 @@ class _MainPageState extends State<MainPage> {
     Icons.person,
   ];
 
-  int currentIndex = 0;
-
   @override
   void initState() {
     // init wallet & transaction
@@ -68,47 +67,55 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: screens,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // open form transaction page
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const FormTransactionPage(),
-            ),
-          );
-        },
-        backgroundColor: const Color(0xff031A6E),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        icons: const [
-          Icons.home,
-          Icons.bar_chart,
-          Icons.credit_card,
-          Icons.person,
-        ],
-        activeIndex: currentIndex,
-        onTap: (val) {
-          setState(() {
-            currentIndex = val;
-          });
-        },
-        backgroundColor: Colors.white,
-        activeColor: const Color(0xff031A6E),
-        inactiveColor: const Color(0xffCBCBDD),
-        gapLocation: GapLocation.center,
-        notchSmoothness: NotchSmoothness.defaultEdge,
-      ),
+    return BlocProvider(
+      create: (context) => MainCubit(),
+      child: Builder(builder: (context) {
+        return BlocBuilder<MainCubit, int>(
+          builder: (context, currentIndex) {
+            return Scaffold(
+              body: IndexedStack(
+                index: currentIndex,
+                children: screens,
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  // open form transaction page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FormTransactionPage(),
+                    ),
+                  );
+                },
+                backgroundColor: const Color(0xff031A6E),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              bottomNavigationBar: AnimatedBottomNavigationBar(
+                icons: const [
+                  Icons.home,
+                  Icons.bar_chart,
+                  Icons.credit_card,
+                  Icons.person,
+                ],
+                activeIndex: currentIndex,
+                onTap: (val) {
+                  context.read<MainCubit>().change(val);
+                },
+                backgroundColor: Colors.white,
+                activeColor: const Color(0xff031A6E),
+                inactiveColor: const Color(0xffCBCBDD),
+                gapLocation: GapLocation.center,
+                notchSmoothness: NotchSmoothness.defaultEdge,
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }
