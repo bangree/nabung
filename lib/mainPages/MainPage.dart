@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/categoryCubit.dart';
 import 'package:nabung/cubit/mainCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/userCubit.dart';
@@ -61,6 +62,7 @@ class _MainPageState extends State<MainPage> {
     UserModel user = context.read<AuthenticationDataCubit>().state.data!;
     context.read<WalletCubit>().init(userId: user.id!);
     context.read<TransactionCubit>().init(userId: user.id!);
+    context.read<CategoryCubit>().init(userId: user.id!);
     context.read<UserCubit>().init(user: user);
     super.initState();
   }

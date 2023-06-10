@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nabung/constants/color.dart';
 import 'package:nabung/cubit/authenticationDataCubit.dart';
+import 'package:nabung/cubit/categoryCubit.dart';
 import 'package:nabung/cubit/settingCubit.dart';
 import 'package:nabung/cubit/transactionCubit.dart';
 import 'package:nabung/cubit/userCubit.dart';
 import 'package:nabung/cubit/walletCubit.dart';
 import 'package:nabung/mainPages/SplashPage.dart';
 import 'package:nabung/repository/authenticationRepository.dart';
+import 'package:nabung/repository/categoryRepository.dart';
 import 'package:nabung/repository/transactionRepository.dart';
 import 'package:nabung/repository/userRepository.dart';
 import 'package:nabung/repository/walletRepository.dart';
@@ -50,6 +52,7 @@ class _MyAppState extends State<MyApp> {
   late WalletRepository walletRepository;
   late TransactionRepository transactionRepository;
   late UserRepository userRepository;
+  late CategoryRepository categoryRepository;
 
   @override
   void initState() {
@@ -57,6 +60,7 @@ class _MyAppState extends State<MyApp> {
     walletRepository = WalletRepository();
     transactionRepository = TransactionRepository();
     userRepository = UserRepository();
+    categoryRepository = CategoryRepository();
     super.initState();
   }
 
@@ -78,6 +82,9 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider(
           create: (context) => userRepository,
         ),
+        RepositoryProvider(
+          create: (context) => categoryRepository,
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -94,6 +101,11 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) => TransactionCubit(
               transactionRepository: transactionRepository,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => CategoryCubit(
+              categoryRepository: categoryRepository,
             ),
           ),
           BlocProvider(
