@@ -392,7 +392,7 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
 
     await flutterLocalNotificationsPlugin.show(
       1,
-      'Notify',
+      'Wallet Overbudget!',
       'Your wallet ${wallet.name ?? ''} has reached the maximum budget with “${wallet.textBudgetPlan}”',
       NotificationDetails(android: androidNotificationDetails),
     );
