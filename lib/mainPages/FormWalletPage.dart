@@ -36,9 +36,9 @@ class _FormWalletPageState extends State<FormWalletPage> {
     // init form
     if (widget.wallet != null) {
       nameController.text = widget.wallet!.name ?? '';
-      balanceController.text = widget.wallet!.textBalance;
-      budgetPlanController.text = widget.wallet!.textBudgetPlan;
-      goalController.text = widget.wallet!.textGoal;
+      balanceController.text = widget.wallet!.formBalance;
+      budgetPlanController.text = widget.wallet!.formBudgetPlan;
+      goalController.text = widget.wallet!.formGoal;
       colorController.text = widget.wallet!.color ?? '';
       selectedColor = ColorModel(
         label: widget.wallet!.color!,

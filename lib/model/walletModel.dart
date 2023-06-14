@@ -25,6 +25,12 @@ class WalletModel extends Equatable {
   String get textDeviationGoal =>
       '${deviationGoal > 0 ? '+' : ''}${currencyFormat(value: deviationGoal)}';
 
+  String get formBalance => currencyFormat(value: balance, symbol: '');
+
+  String get formBudgetPlan => currencyFormat(value: budgetPlan, symbol: '');
+
+  String get formGoal => currencyFormat(value: goal, symbol: '');
+
   String get dateUpdatedAt {
     DateTime dateTime = DateTime.now();
     if (updatedAt != null) {
@@ -46,11 +52,11 @@ class WalletModel extends Equatable {
     return const Color(0xFF5E657E);
   }
 
-  String currencyFormat({int? value}) {
+  String currencyFormat({int? value, String symbol = 'Rp '}) {
     if (value == null) return 'Rp 0';
     return NumberFormat.currency(
       locale: 'id_ID',
-      symbol: 'Rp ',
+      symbol: symbol,
       decimalDigits: 0,
     ).format(value);
   }
