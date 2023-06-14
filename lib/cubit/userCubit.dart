@@ -12,13 +12,15 @@ class UserCubit extends Cubit<BaseState<UserModel>> {
     required this.userRepository,
   }) : super(const InitializedState());
 
-  late StreamSubscription<UserModel> streamSubscription;
+  late StreamSubscription<UserModel?> streamSubscription;
 
   void init({required UserModel user}) async {
     emit(LoadedState(data: user));
 
     streamSubscription = userRepository.watch(userId: user.id!).listen(
-          (data) => emit(LoadedState(data: data)),
+          (data) => data != null
+              ? emit(LoadedState(data: data))
+              : emit(const InitializedState()),
         );
   }
 

@@ -132,12 +132,20 @@ class AuthenticationRepository {
     }
   }
 
-  Future<Either<String, String>> deleteAccount() async {
+  Future<Either<String, String>> deleteAccount({
+    required String email,
+    required String password,
+  }) async {
     try {
-      if (auth.currentUser != null) {
-        final String id = auth.currentUser!.uid;
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        final String id = userCredential.user!.uid;
         // remove auth
-        await auth.currentUser!.delete();
+        await userCredential.user!.delete();
 
         // remove firestore
         await userReference.doc(id).delete();

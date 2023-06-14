@@ -84,12 +84,18 @@ class AuthenticationActionCubit extends Cubit<BaseState<UserModel>> {
     emit(resultState);
   }
 
-  void deleteAccount() async {
+  void deleteAccount({
+    required String email,
+    required String password,
+  }) async {
     emit(const LoadingState());
 
     // check user login
     Either<String, String> result =
-        await authenticationRepository.deleteAccount();
+        await authenticationRepository.deleteAccount(
+      email: email,
+      password: password,
+    );
 
     BaseState<UserModel> resultState = result.fold(
       (l) => SuccessState(message: l),

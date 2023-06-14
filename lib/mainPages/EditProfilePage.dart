@@ -15,6 +15,7 @@ import 'package:nabung/mainPages/LoginPage.dart';
 import 'package:nabung/model/userModel.dart';
 import 'package:nabung/repository/authenticationRepository.dart';
 import 'package:nabung/widgets/menuItem.dart';
+import 'package:nabung/widgets/textFieldWidget.dart';
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -132,6 +133,12 @@ class EditProfilePage extends StatelessWidget {
                       onTap: () {
                         AuthenticationActionCubit authenticationActionCubit =
                             context.read<AuthenticationActionCubit>();
+                        String email = context
+                            .read<AuthenticationDataCubit>()
+                            .state
+                            .data!
+                            .email!;
+
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -146,8 +153,22 @@ class EditProfilePage extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () async {
-                                    authenticationActionCubit.deleteAccount();
                                     Navigator.pop(context);
+
+                                    // show dialog input password
+                                    String? password = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const InputPasswordDialog();
+                                      },
+                                    );
+
+                                    if (password != null) {
+                                      authenticationActionCubit.deleteAccount(
+                                        email: email,
+                                        password: password,
+                                      );
+                                    }
                                   },
                                   child: const Text('Yes'),
                                 ),
@@ -164,6 +185,54 @@ class EditProfilePage extends StatelessWidget {
           },
         );
       }),
+    );
+  }
+}
+
+class InputPasswordDialog extends StatefulWidget {
+  const InputPasswordDialog({Key? key}) : super(key: key);
+
+  @override
+  State<InputPasswordDialog> createState() => _InputPasswordDialogState();
+}
+
+class _InputPasswordDialogState extends State<InputPasswordDialog> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Form(
+        key: formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextFieldWidget(
+              controller: passwordController,
+              hint: 'Masukkan password',
+              obscure: true,
+              validator: (val) {
+                if (val?.isEmpty ?? true) {
+                  return 'this field cannot be empty';
+                }
+                return null;
+              },
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            if (formKey.currentState?.validate() ?? false) {
+              Navigator.pop(context, passwordController.text);
+            }
+          },
+          child: const Text('Submit'),
+        ),
+      ],
     );
   }
 }
