@@ -16,6 +16,7 @@ import 'package:nabung/model/transactionModel.dart';
 import 'package:nabung/model/walletModel.dart';
 import 'package:nabung/widgets/transactionsItem.dart';
 import 'package:nabung/widgets/wallets.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,6 +33,13 @@ class _HomePageState extends State<HomePage> {
   final transList = Transaction.transactionList();
 
   final children = List<Widget>.generate(5, (i) => ListTile(title: Text('$i')));
+
+  @override
+  void initState() {
+    requestNotificationPermission();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -280,5 +288,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void requestNotificationPermission() async {
+    PermissionStatus notificationStatus =
+        await Permission.notification.request();
+    if (notificationStatus == PermissionStatus.granted) {}
+    if (notificationStatus == PermissionStatus.denied) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("This Permission is recommended")));
+    }
+    if (notificationStatus == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
   }
 }

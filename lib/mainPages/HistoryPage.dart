@@ -321,7 +321,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                             ),
                                             const SizedBox(height: 2),
                                             Text(
-                                              '${currencyFormat(value: totalDayTransaction)} / ${selectedWallet!.textBudgetPlan}',
+                                              '${currencyFormat(value: totalDayTransaction < 0 ? (totalDayTransaction * -1) : totalDayTransaction)} / ${selectedWallet!.textBudgetPlan}',
                                               style: TextStyle(
                                                 color:
                                                     isOverBudget ? red : green,

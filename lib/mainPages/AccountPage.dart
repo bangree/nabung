@@ -63,14 +63,14 @@ class _AccountPageState extends State<AccountPage> {
                         child: IntrinsicHeight(
                           child: Row(
                             children: [
-                              Container(
-                                height: 75,
-                                width: 75,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xffD9D9D9),
-                                ),
-                              ),
+                              // Container(
+                              //   height: 75,
+                              //   width: 75,
+                              //   decoration: const BoxDecoration(
+                              //     shape: BoxShape.circle,
+                              //     color: Color(0xffD9D9D9),
+                              //   ),
+                              // ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: Column(
